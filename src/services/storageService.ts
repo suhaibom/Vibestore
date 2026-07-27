@@ -11,8 +11,8 @@ const STORAGE_KEYS = {
 
 const DEFAULT_ADMIN: User = {
   id: 'usr_admin_001',
-  name: 'Admin Manager',
-  email: 'admin@vibestore.com',
+  name: 'Vibe Admin (Muhammed)',
+  email: 'mg8223539@gmail.com',
   role: 'admin',
   phone: '+91 9876543210',
   address: 'Vibe Store HQ',

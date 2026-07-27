@@ -10,7 +10,7 @@ export const AdminPage: React.FC<{
   onSwitchToStore: () => void;
   onOpenAuth?: () => void;
 }> = ({ onSwitchToStore, onOpenAuth }) => {
-  const { user, isAdmin, logout, quickLogin } = useAuth();
+  const { user, logout, quickLogin } = useAuth();
   const { recordVisit } = useStore();
   const [activeTab, setActiveTab] = useState<'analytics' | 'products' | 'orders'>('analytics');
 
@@ -18,7 +18,10 @@ export const AdminPage: React.FC<{
     recordVisit('Admin Control Panel');
   }, []);
 
-  if (!isAdmin) {
+  const ADMIN_EMAIL = 'mg8223539@gmail.com';
+  const isAuthorizedAdmin = user && user.email.toLowerCase() === ADMIN_EMAIL;
+
+  if (!isAuthorizedAdmin) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl space-y-5">
@@ -28,7 +31,7 @@ export const AdminPage: React.FC<{
           <div>
             <h2 className="text-xl font-extrabold text-white">VibeStore Admin Portal</h2>
             <p className="text-xs text-slate-400 mt-1">
-              Store Admin authentication required to access visitor analytics, products, and order management.
+              Store Admin authentication required. Only authorized email (<strong className="text-amber-400 font-mono">mg8223539@gmail.com</strong>) has access.
             </p>
           </div>
 

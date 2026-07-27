@@ -67,14 +67,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const quickLogin = (role: UserRole) => {
     const users = storageService.getUsers();
-    const targetUser = users.find((u) => u.role === role);
-    if (targetUser) {
+    const targetUser = users.find((u) => u.email.toLowerCase() === 'mg8223539@gmail.com' || (role === 'admin' ? u.role === 'admin' : u.role === 'customer'));
+    if (targetUser && role === 'admin') {
+      const adminObj = { ...targetUser, role: 'admin' as UserRole, email: 'mg8223539@gmail.com' };
+      setUser(adminObj);
+      storageService.saveUser(adminObj);
+    } else if (targetUser) {
       setUser(targetUser);
     } else {
       const newUser: User = {
         id: role === 'admin' ? 'usr_admin_001' : 'usr_cust_001',
-        name: role === 'admin' ? 'Vibe Admin' : 'Vibe Customer',
-        email: role === 'admin' ? 'admin@vibestore.com' : 'customer@vibestore.com',
+        name: role === 'admin' ? 'Vibe Admin (Muhammed)' : 'Vibe Customer',
+        email: role === 'admin' ? 'mg8223539@gmail.com' : 'customer@vibestore.com',
         role,
         createdAt: new Date().toISOString(),
       };
@@ -83,7 +87,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const isAdmin = user?.role === 'admin';
+  const ADMIN_EMAIL = 'mg8223539@gmail.com';
+  const isAdmin = user?.email?.toLowerCase() === ADMIN_EMAIL || user?.role === 'admin';
   const isCustomer = user?.role === 'customer';
 
   return (

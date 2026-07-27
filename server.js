@@ -38,7 +38,17 @@ function verifyOtpToken(email, otp, otpToken) {
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || ('re_' + 'aYd3X69E_' + '67H8mbM7EyAUjkTUvQ1CqK7w');
 const SENDER_EMAIL = process.env.SENDER_EMAIL || 'otp@vibestore.bond';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'mg8223539@gmail.com';
 const resend = new Resend(RESEND_API_KEY);
+
+// Admin Authorization Middleware
+const isAdmin = (req, res, next) => {
+  const userEmail = req.headers['x-user-email'] || req.user?.email || req.body?.email;
+  if (userEmail && userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+    return next();
+  }
+  return res.status(403).json({ message: 'Access Denied: Ningalkk Admin Panel access illa!' });
+};
 
 // Nodemailer SMTP Transporter setup (if EMAIL_USER and EMAIL_PASS are set in .env)
 const EMAIL_USER = process.env.EMAIL_USER;
