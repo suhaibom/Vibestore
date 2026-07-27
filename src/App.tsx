@@ -26,7 +26,10 @@ const MainAppContent: React.FC = () => {
   if (isAdminDomain) {
     return (
       <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
-        <AdminPage onSwitchToStore={() => { window.location.href = 'https://vibestore.bond'; }} />
+        <AdminPage
+          onSwitchToStore={() => { window.location.href = 'https://vibestore.bond'; }}
+          onOpenAuth={() => setIsAuthOpen(true)}
+        />
         <LoginForm isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       </div>
     );

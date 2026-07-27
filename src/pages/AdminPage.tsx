@@ -6,8 +6,11 @@ import { ProductManager } from '../components/admin/ProductManager';
 import { VisitorAnalytics } from '../components/admin/VisitorAnalytics';
 import { OrderManager } from '../components/admin/OrderManager';
 
-export const AdminPage: React.FC<{ onSwitchToStore: () => void }> = ({ onSwitchToStore }) => {
-  const { user, isAdmin, logout } = useAuth();
+export const AdminPage: React.FC<{
+  onSwitchToStore: () => void;
+  onOpenAuth?: () => void;
+}> = ({ onSwitchToStore, onOpenAuth }) => {
+  const { user, isAdmin, logout, quickLogin } = useAuth();
   const { recordVisit } = useStore();
   const [activeTab, setActiveTab] = useState<'analytics' | 'products' | 'orders'>('analytics');
 
@@ -18,18 +21,42 @@ export const AdminPage: React.FC<{ onSwitchToStore: () => void }> = ({ onSwitchT
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md text-center shadow-2xl">
-          <ShieldCheck className="w-16 h-16 text-rose-400 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-white mb-2">Admin Access Required</h2>
-          <p className="text-xs text-slate-400 mb-6">
-            You must be logged in as a Store Admin to view visitor logs and manage products.
-          </p>
-          <button
-            onClick={onSwitchToStore}
-            className="px-5 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-600/30 transition"
-          >
-            Return to Store
-          </button>
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl space-y-5">
+          <div className="w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto">
+            <ShieldCheck className="w-10 h-10" />
+          </div>
+          <div>
+            <h2 className="text-xl font-extrabold text-white">VibeStore Admin Portal</h2>
+            <p className="text-xs text-slate-400 mt-1">
+              Store Admin authentication required to access visitor analytics, products, and order management.
+            </p>
+          </div>
+
+          <div className="space-y-2.5 pt-2">
+            <button
+              onClick={() => quickLogin('admin')}
+              className="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black text-xs rounded-xl shadow-lg shadow-amber-500/20 transition cursor-pointer flex items-center justify-center space-x-2"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>⚡ Quick Admin Login (1-Click Access)</span>
+            </button>
+
+            {onOpenAuth && (
+              <button
+                onClick={onOpenAuth}
+                className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-indigo-600/30 transition cursor-pointer"
+              >
+                🔐 Login via Email OTP
+              </button>
+            )}
+
+            <button
+              onClick={onSwitchToStore}
+              className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl border border-slate-700 transition cursor-pointer"
+            >
+              🌐 Return to Main Storefront
+            </button>
+          </div>
         </div>
       </div>
     );
