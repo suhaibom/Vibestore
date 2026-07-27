@@ -118,6 +118,72 @@ html.light-mode .hero-title-dark {
   color: #ffffff !important;
 }
 
+/* ============================================================
+   CRITICAL FIX: DARK MODALS (PROFILE HUB, LOGIN, CHECKOUT)
+   MUST REMAIN CRISP DARK WITH HIGH CONTRAST TEXT IN LIGHT MODE
+   ============================================================ */
+
+.dark-modal,
+html.light-mode .dark-modal {
+  background-color: #0f172a !important;
+  border-color: #1e293b !important;
+  color: #f8fafc !important;
+}
+
+.dark-modal *,
+html.light-mode .dark-modal * {
+  /* Retain dark theme text contrast inside dark-modal */
+}
+
+html.light-mode .dark-modal .bg-slate-950,
+html.light-mode .dark-modal .bg-slate-900 {
+  background-color: #090d16 !important;
+  border-color: #1e293b !important;
+}
+
+html.light-mode .dark-modal .bg-slate-800,
+html.light-mode .dark-modal .bg-slate-800\/80,
+html.light-mode .dark-modal .bg-slate-800\/60,
+html.light-mode .dark-modal .bg-slate-800\/40 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+html.light-mode .dark-modal input,
+html.light-mode .dark-modal select,
+html.light-mode .dark-modal textarea {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #ffffff !important;
+}
+
+html.light-mode .dark-modal input::placeholder,
+html.light-mode .dark-modal textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.light-mode .dark-modal .text-white {
+  color: #ffffff !important;
+}
+
+html.light-mode .dark-modal .text-slate-100,
+html.light-mode .dark-modal .text-slate-200 {
+  color: #f8fafc !important;
+}
+
+html.light-mode .dark-modal .text-slate-300 {
+  color: #cbd5e1 !important;
+}
+
+html.light-mode .dark-modal .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+html.light-mode .dark-modal .text-slate-500 {
+  color: #64748b !important;
+}
+
 html.light-mode .hero-desc-dark {
   color: #e2e8f0 !important;
 }

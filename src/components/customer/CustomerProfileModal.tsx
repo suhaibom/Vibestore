@@ -220,8 +220,8 @@ export const CustomerProfileModal: React.FC<CustomerProfileModalProps> = ({ isOp
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-2 sm:p-4 animate-fadeIn">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-5xl h-[92vh] max-h-[750px] shadow-2xl relative text-slate-100 flex flex-col md:flex-row overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-2 sm:p-4 animate-fadeIn">
+      <div className="dark-modal bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-5xl h-[92vh] max-h-[750px] shadow-2xl relative text-slate-100 flex flex-col md:flex-row overflow-hidden">
 
         {/* Top Close Button */}
         <button
