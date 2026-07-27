@@ -97,7 +97,7 @@ html.light-mode .text-slate-500 {
 html.light-mode .border-slate-800,
 html.light-mode .border-slate-700,
 html.light-mode .border-slate-900 {
-  border-color: #e2e8f0 !important;
+  border-color: #e2e8f0;
 }
 
 /* ============================================================
@@ -120,7 +120,7 @@ html.light-mode .hero-title-dark {
 
 /* ============================================================
    CRITICAL FIX: DARK MODALS (PROFILE HUB, LOGIN, CHECKOUT)
-   MUST REMAIN CRISP DARK WITH HIGH CONTRAST TEXT IN LIGHT MODE
+   FORCE BRIGHT HIGH-CONTRAST TEXT & DARK SURFACES EVERYWHERE
    ============================================================ */
 
 .dark-modal,
@@ -130,56 +130,71 @@ html.light-mode .dark-modal {
   color: #f8fafc !important;
 }
 
-.dark-modal *,
-html.light-mode .dark-modal * {
-  /* Retain dark theme text contrast inside dark-modal */
-}
-
+.dark-modal .bg-slate-950,
+.dark-modal .bg-slate-900,
 html.light-mode .dark-modal .bg-slate-950,
 html.light-mode .dark-modal .bg-slate-900 {
   background-color: #090d16 !important;
   border-color: #1e293b !important;
 }
 
+.dark-modal .bg-slate-800,
+.dark-modal .bg-slate-800\/80,
+.dark-modal .bg-slate-800\/60,
+.dark-modal .bg-slate-800\/40,
+.dark-modal .bg-slate-800\/30,
 html.light-mode .dark-modal .bg-slate-800,
 html.light-mode .dark-modal .bg-slate-800\/80,
 html.light-mode .dark-modal .bg-slate-800\/60,
-html.light-mode .dark-modal .bg-slate-800\/40 {
+html.light-mode .dark-modal .bg-slate-800\/40,
+html.light-mode .dark-modal .bg-slate-800\/30 {
   background-color: #1e293b !important;
   border-color: #334155 !important;
   color: #f8fafc !important;
 }
 
+.dark-modal input,
+.dark-modal select,
+.dark-modal textarea,
 html.light-mode .dark-modal input,
 html.light-mode .dark-modal select,
 html.light-mode .dark-modal textarea {
-  background-color: #0f172a !important;
+  background-color: #090d16 !important;
   border-color: #334155 !important;
   color: #ffffff !important;
 }
 
+.dark-modal input::placeholder,
+.dark-modal textarea::placeholder,
 html.light-mode .dark-modal input::placeholder,
 html.light-mode .dark-modal textarea::placeholder {
   color: #94a3b8 !important;
 }
 
-html.light-mode .dark-modal .text-white {
+.dark-modal .text-white,
+html.light-mode .dark-modal .text-white,
+html.light-mode .dark-modal [class*="bg-gradient-to-"] .text-white {
   color: #ffffff !important;
 }
 
+.dark-modal .text-slate-100,
+.dark-modal .text-slate-200,
 html.light-mode .dark-modal .text-slate-100,
 html.light-mode .dark-modal .text-slate-200 {
   color: #f8fafc !important;
 }
 
+.dark-modal .text-slate-300,
 html.light-mode .dark-modal .text-slate-300 {
   color: #cbd5e1 !important;
 }
 
+.dark-modal .text-slate-400,
 html.light-mode .dark-modal .text-slate-400 {
   color: #94a3b8 !important;
 }
 
+.dark-modal .text-slate-500,
 html.light-mode .dark-modal .text-slate-500 {
   color: #64748b !important;
 }

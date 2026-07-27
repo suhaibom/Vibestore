@@ -251,41 +251,41 @@ export const CustomerProfileModal: React.FC<CustomerProfileModalProps> = ({ isOp
             </div>
 
             {/* Navigation Links */}
-            <nav className="space-y-1 overflow-y-auto max-h-[420px] pr-1 custom-scrollbar">
+            <nav className="space-y-1.5 overflow-y-auto max-h-[420px] pr-1 custom-scrollbar">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'overview'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-4 h-4 text-indigo-400" />
                 <span>Dashboard Overview</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('personal')}
-                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'personal'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
-                <UserIcon className="w-4 h-4" />
+                <UserIcon className="w-4 h-4 text-indigo-400" />
                 <span>Personal Info</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('orders')}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'orders'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <Package className="w-4 h-4" />
+                  <Package className="w-4 h-4 text-indigo-400" />
                   <span>Orders & Tracking</span>
                 </div>
                 {activeOrders.length > 0 && (
@@ -297,26 +297,26 @@ export const CustomerProfileModal: React.FC<CustomerProfileModalProps> = ({ isOp
 
               <button
                 onClick={() => setActiveTab('addresses')}
-                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'addresses'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
-                <MapPin className="w-4 h-4" />
+                <MapPin className="w-4 h-4 text-indigo-400" />
                 <span>Saved Addresses</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('wallet')}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'wallet'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
                 <div className="flex items-center space-x-3">
-                  <Wallet className="w-4 h-4" />
+                  <Wallet className="w-4 h-4 text-indigo-400" />
                   <span>Store Wallet</span>
                 </div>
                 <span className="text-[11px] font-mono text-emerald-400 font-extrabold">₹{walletBalance}</span>
@@ -324,22 +324,22 @@ export const CustomerProfileModal: React.FC<CustomerProfileModalProps> = ({ isOp
 
               <button
                 onClick={() => setActiveTab('wishlist')}
-                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'wishlist'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
-                <Heart className="w-4 h-4" />
+                <Heart className="w-4 h-4 text-indigo-400" />
                 <span>Wishlist</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('rewards')}
-                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'rewards'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
                 <Gift className="w-4 h-4 text-pink-400" />
@@ -348,25 +348,25 @@ export const CustomerProfileModal: React.FC<CustomerProfileModalProps> = ({ isOp
 
               <button
                 onClick={() => setActiveTab('security')}
-                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'security'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
-                <Shield className="w-4 h-4" />
+                <Shield className="w-4 h-4 text-indigo-400" />
                 <span>Security & Settings</span>
               </button>
 
               <button
                 onClick={() => setActiveTab('support')}
-                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-extrabold transition cursor-pointer ${
                   activeTab === 'support'
                     ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                    : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
                 }`}
               >
-                <HelpCircle className="w-4 h-4" />
+                <HelpCircle className="w-4 h-4 text-indigo-400" />
                 <span>Support & Help</span>
               </button>
             </nav>
