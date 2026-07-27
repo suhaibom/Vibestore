@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 
 dotenv.config();
 
@@ -12,6 +13,28 @@ app.use(cors());
 
 // Temporary OTP memory store
 const otpStore = new Map();
+const OTP_SECRET = process.env.OTP_SECRET || 'vibe_store_secure_otp_secret_key_2026';
+
+function generateOtpToken(email, otp, expiresAt) {
+  const data = `${email}:${otp}:${expiresAt}`;
+  const hash = crypto.createHmac('sha256', OTP_SECRET).update(data).digest('hex');
+  return `${expiresAt}.${hash}`;
+}
+
+function verifyOtpToken(email, otp, otpToken) {
+  if (!otpToken || typeof otpToken !== 'string') return { valid: false, message: 'No active OTP found. Please request a new OTP code.' };
+  const parts = otpToken.split('.');
+  if (parts.length !== 2) return { valid: false, message: 'Invalid OTP token.' };
+  const [expiresAtStr, providedHash] = parts;
+  const expiresAt = Number(expiresAtStr);
+  if (!expiresAt || isNaN(expiresAt)) return { valid: false, message: 'Invalid OTP token.' };
+  if (Date.now() > expiresAt) return { valid: false, message: 'OTP has expired! Please request a new code.' };
+
+  const expectedHash = crypto.createHmac('sha256', OTP_SECRET).update(`${email}:${otp}:${expiresAt}`).digest('hex');
+  if (expectedHash !== providedHash) return { valid: false, message: 'Incorrect OTP code! Please check and try again.' };
+
+  return { valid: true };
+}
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || ('re_' + 'aYd3X69E_' + '67H8mbM7EyAUjkTUvQ1CqK7w');
 const SENDER_EMAIL = process.env.SENDER_EMAIL || 'otp@vibestore.bond';
@@ -44,8 +67,9 @@ const sendOtpHandler = async (req, res) => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const expiresAt = Date.now() + 5 * 60 * 1000; // 5 Minutes Expiration
 
-  // Save OTP against recipient email
+  // Save OTP against recipient email & generate stateless token
   otpStore.set(email, { otp, expiresAt });
+  const otpToken = generateOtpToken(email, otp, expiresAt);
 
   console.log(`[OTP Generated] Email: ${email} | Code: ${otp}`);
 
@@ -71,6 +95,7 @@ const sendOtpHandler = async (req, res) => {
       return res.json({
         success: true,
         message: `OTP code sent to ${email}. Please check your email inbox!`,
+        otpToken,
       });
     } catch (smtpError) {
       console.error('Nodemailer Error:', smtpError.message);
@@ -107,6 +132,7 @@ const sendOtpHandler = async (req, res) => {
     return res.json({
       success: true,
       message: `OTP code sent to ${email}. Please check your email inbox!`,
+      otpToken,
     });
   } catch (error) {
     console.error('Resend Error:', error.message);
@@ -120,24 +146,24 @@ const sendOtpHandler = async (req, res) => {
 
 // Handler for Verify OTP
 const verifyOtpHandler = (req, res) => {
-  const { email, otp } = req.body || {};
-  const storedData = otpStore.get(email);
+  const { email, otp, token } = req.body || {};
 
-  if (!storedData) {
-    return res.status(400).json({ success: false, message: 'No active OTP found. Please request a new OTP code.' });
+  // First try verifying stateless HMAC token (Serverless compatible)
+  let verification = verifyOtpToken(email, otp, token);
+
+  // Fallback try in-memory store (Stateful server fallback)
+  if (!verification.valid && otpStore.has(email)) {
+    const storedData = otpStore.get(email);
+    if (Date.now() <= storedData.expiresAt && storedData.otp === otp) {
+      verification = { valid: true };
+      otpStore.delete(email);
+    }
   }
 
-  if (Date.now() > storedData.expiresAt) {
-    otpStore.delete(email);
-    return res.status(400).json({ success: false, message: 'OTP has expired! Please request a new code.' });
+  if (!verification.valid) {
+    return res.status(400).json({ success: false, message: verification.message });
   }
 
-  if (storedData.otp !== otp) {
-    return res.status(400).json({ success: false, message: 'Incorrect OTP code! Please check and try again.' });
-  }
-
-  // OTP Verified! Clear memory
-  otpStore.delete(email);
   res.json({ success: true, message: 'OTP verified successfully! Welcome to Vibe Store.' });
 };
 

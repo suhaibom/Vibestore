@@ -17,6 +17,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
   const [phone, setPhone] = useState('');
   const [role] = useState<UserRole>('customer');
   const [otpInput, setOtpInput] = useState('');
+  const [otpToken, setOtpToken] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +51,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
       if (!data || !data.success) {
         setErrorMsg(data?.message || 'Failed to send OTP email. Please ensure backend server is running.');
       } else {
+        if (data.otpToken) setOtpToken(data.otpToken);
         setSuccessMsg(`🔐 OTP Code sent to ${email}. Check your email inbox!`);
         setStep('otp');
       }
@@ -78,7 +80,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ isOpen, onClose }) => {
       const res = await fetch(`${API_BASE}/api/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, otp: otpInput }),
+        body: JSON.stringify({ email, otp: otpInput, token: otpToken }),
       }).catch(() => null);
 
       const data = res ? await res.json() : null;
