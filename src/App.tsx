@@ -12,7 +12,13 @@ import { OrderHistoryModal } from './components/customer/OrderHistoryModal';
 import { CustomerProfileModal } from './components/customer/CustomerProfileModal';
 
 const MainAppContent: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<'home' | 'shop' | 'orders' | 'admin'>('home');
+  const [currentTab, setCurrentTab] = useState<'home' | 'shop' | 'orders' | 'admin'>(() => {
+    const hostname = window.location.hostname.toLowerCase();
+    if (hostname.startsWith('admin.') || hostname.includes('admin')) {
+      return 'admin';
+    }
+    return 'home';
+  });
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
