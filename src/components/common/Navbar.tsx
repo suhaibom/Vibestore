@@ -72,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Search bar with Live Instant Suggestions */}
           {currentTab === 'shop' && (
-            <div className="hidden md:flex items-center flex-1 max-w-xl mx-4 sm:mx-6">
+            <div className="hidden md:flex items-center flex-1 max-w-2xl mx-4 sm:mx-6">
               <SearchSuggestions />
             </div>
           )}

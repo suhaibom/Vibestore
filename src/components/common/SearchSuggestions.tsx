@@ -99,41 +99,41 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ onSelectPr
 
       {/* Flipkart-Style Large Suggestions Floating Panel */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl z-50 overflow-hidden text-slate-900 dark:text-slate-100 animate-fadeIn max-h-[550px] flex flex-col">
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2.5 w-[94vw] sm:w-[640px] md:w-[720px] max-w-[760px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl z-50 overflow-hidden text-slate-900 dark:text-slate-100 animate-fadeIn max-h-[580px] flex flex-col">
           
           {/* CASE A: EMPTY SEARCH -> SHOW FLIPKART STYLE TRENDING LIST & TOP PRODUCTS */}
           {!searchQuery.trim() && (
-            <div className="p-4 sm:p-5 space-y-5 overflow-y-auto custom-scrollbar">
+            <div className="p-4 sm:p-6 space-y-6 overflow-y-auto custom-scrollbar">
               
-              {/* Flipkart Style "Trending" Vertical List */}
+              {/* Flipkart Style "Trending" Grid */}
               <div>
-                <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <div className="flex items-center space-x-1.5 text-xs font-extrabold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">
                   <Flame className="w-4 h-4 text-amber-500" />
-                  <span>Trending</span>
+                  <span>Trending Searches</span>
                 </div>
 
-                <div className="space-y-1">
+                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
                   {TRENDING_KEYWORDS.map((keyword) => (
                     <div
                       key={keyword}
                       onClick={() => handleKeywordClick(keyword)}
-                      className="flex items-center space-x-3 px-3 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition cursor-pointer text-slate-700 dark:text-slate-200 font-semibold text-sm group"
+                      className="flex items-center space-x-3 px-3.5 py-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition cursor-pointer text-slate-700 dark:text-slate-200 font-semibold text-sm group border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
                     >
-                      <Search className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
-                      <span className="group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{keyword}</span>
+                      <Search className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors shrink-0" />
+                      <span className="group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors capitalize">{keyword}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Recommended Top Deals Section */}
-              <div className="pt-3 border-t border-slate-200 dark:border-slate-800">
-                <div className="flex items-center justify-between text-xs font-extrabold text-indigo-600 dark:text-indigo-400 mb-3">
+              <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                <div className="flex items-center justify-between text-xs font-extrabold text-indigo-600 dark:text-indigo-400 mb-3.5">
                   <span>Popular Product Suggestions</span>
-                  <span className="text-[10px] text-slate-400">Featured</span>
+                  <span className="text-[10px] text-slate-400 font-semibold">Handpicked Deals</span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {recommendedProducts.map((product) => (
                     <div
                       key={product.id}
@@ -141,19 +141,19 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ onSelectPr
                         if (onSelectProduct) onSelectProduct(product);
                         setIsOpen(false);
                       }}
-                      className="p-2.5 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/70 rounded-2xl transition flex items-center justify-between group cursor-pointer"
+                      className="p-3 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700/70 rounded-2xl transition flex items-center justify-between group cursor-pointer"
                     >
-                      <div className="flex items-center space-x-3 overflow-hidden">
+                      <div className="flex items-center space-x-3.5 overflow-hidden">
                         <img
                           src={product.image}
                           alt={product.name}
-                          className="w-12 h-12 rounded-xl object-cover bg-slate-900 shrink-0 border border-slate-200 dark:border-slate-700"
+                          className="w-13 h-13 rounded-xl object-cover bg-slate-900 shrink-0 border border-slate-200 dark:border-slate-700"
                         />
                         <div className="overflow-hidden">
-                          <p className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1">
+                          <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-1">
                             {product.name}
                           </p>
-                          <div className="flex items-center space-x-2 text-xs mt-0.5">
+                          <div className="flex items-center space-x-2 text-xs mt-1">
                             <span className="font-black text-emerald-600 dark:text-emerald-400">₹{product.price}</span>
                             {product.originalPrice && (
                               <span className="line-through text-slate-400 text-[10px]">
@@ -166,7 +166,7 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({ onSelectPr
 
                       <button
                         onClick={(e) => handleQuickAdd(e, product)}
-                        className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 shrink-0 ml-2 ${
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 shrink-0 ml-2 ${
                           addedItemMap[product.id]
                             ? 'bg-emerald-600 text-white'
                             : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md'
