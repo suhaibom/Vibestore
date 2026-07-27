@@ -63,15 +63,16 @@ const sendOtpHandler = async (req, res) => {
     return res.status(400).json({ success: false, message: 'Email address is required' });
   }
 
-  // Generate 6-digit random OTP
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const cleanEmail = email.toLowerCase().trim();
+  // Generate 6-digit deterministic serverless OTP
+  const otp = generateDeterministicOtp(cleanEmail, 0);
   const expiresAt = Date.now() + 5 * 60 * 1000; // 5 Minutes Expiration
 
   // Save OTP against recipient email & generate stateless token
-  otpStore.set(email, { otp, expiresAt });
-  const otpToken = generateOtpToken(email, otp, expiresAt);
+  otpStore.set(cleanEmail, { otp, expiresAt });
+  const otpToken = generateOtpToken(cleanEmail, otp, expiresAt);
 
-  console.log(`[OTP Generated] Email: ${email} | Code: ${otp}`);
+  console.log(`[OTP Generated] Email: ${cleanEmail} | Code: ${otp}`);
 
   // Option 1: Try Nodemailer (Gmail SMTP) if configured
   if (smtpTransporter) {
@@ -144,24 +145,59 @@ const sendOtpHandler = async (req, res) => {
   }
 };
 
+// Deterministic Time-based OTP fallback for Serverless without shared state
+function generateDeterministicOtp(email, windowOffset = 0) {
+  const windowSize = 5 * 60 * 1000; // 5 minute window
+  const timeWindow = Math.floor((Date.now() + windowOffset * windowSize) / windowSize);
+  const hash = crypto.createHmac('sha256', OTP_SECRET).update(`${email.toLowerCase().trim()}:${timeWindow}`).digest('hex');
+  const num = parseInt(hash.substring(0, 8), 16);
+  return (num % 900000 + 100000).toString();
+}
+
+function verifyDeterministicOtp(email, userOtp) {
+  if (!email || !userOtp) return false;
+  const cleanEmail = email.toLowerCase().trim();
+  const cleanOtp = userOtp.trim();
+
+  // Check current window and previous window (5-10 minute validity)
+  const currentOtp = generateDeterministicOtp(cleanEmail, 0);
+  const prevOtp = generateDeterministicOtp(cleanEmail, -1);
+
+  return cleanOtp === currentOtp || cleanOtp === prevOtp;
+}
+
 // Handler for Verify OTP
 const verifyOtpHandler = (req, res) => {
   const { email, otp, token } = req.body || {};
 
-  // First try verifying stateless HMAC token (Serverless compatible)
-  let verification = verifyOtpToken(email, otp, token);
+  if (!email || !otp) {
+    return res.status(400).json({ success: false, message: 'Email and OTP code are required.' });
+  }
 
-  // Fallback try in-memory store (Stateful server fallback)
-  if (!verification.valid && otpStore.has(email)) {
-    const storedData = otpStore.get(email);
-    if (Date.now() <= storedData.expiresAt && storedData.otp === otp) {
+  const cleanEmail = email.toLowerCase().trim();
+  const cleanOtp = otp.trim();
+
+  // Layer 1: Stateless HMAC Token verification
+  let verification = verifyOtpToken(cleanEmail, cleanOtp, token);
+
+  // Layer 2: Deterministic Time-Window OTP verification (Serverless zero-state fallback)
+  if (!verification.valid) {
+    if (verifyDeterministicOtp(cleanEmail, cleanOtp)) {
       verification = { valid: true };
-      otpStore.delete(email);
+    }
+  }
+
+  // Layer 3: In-memory store (Local dev fallback)
+  if (!verification.valid && otpStore.has(cleanEmail)) {
+    const storedData = otpStore.get(cleanEmail);
+    if (Date.now() <= storedData.expiresAt && storedData.otp === cleanOtp) {
+      verification = { valid: true };
+      otpStore.delete(cleanEmail);
     }
   }
 
   if (!verification.valid) {
-    return res.status(400).json({ success: false, message: verification.message });
+    return res.status(400).json({ success: false, message: 'Incorrect OTP code or expired! Please check your email and try again.' });
   }
 
   res.json({ success: true, message: 'OTP verified successfully! Welcome to Vibe Store.' });
