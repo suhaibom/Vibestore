@@ -5,6 +5,7 @@ import type { Product } from '../../types';
 import { ProductDetailsModal } from './ProductDetailsModal';
 import { CartDrawer } from './CartDrawer';
 import { CheckoutModal } from './CheckoutModal';
+import { SearchSuggestions } from '../common/SearchSuggestions';
 
 interface ShopPageProps {
   isCartOpen: boolean;
@@ -84,6 +85,11 @@ export const ShopPage: React.FC<ShopPageProps> = ({ isCartOpen, onCloseCart, onP
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Live Instant Search Bar for Mobile & Desktop */}
+      <div className="block lg:hidden max-w-xl mx-auto w-full">
+        <SearchSuggestions onSelectProduct={(prod) => setSelectedProduct(prod)} />
       </div>
 
       {/* Flipkart / Amazon Promotional Deal Banner */}
