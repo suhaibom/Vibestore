@@ -282,6 +282,7 @@ export const ShopPage: React.FC<ShopPageProps> = ({ isCartOpen, onCloseCart, onP
       <ProductDetailsModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
+        onProceedCheckout={() => setIsCheckoutOpen(true)}
       />
 
       {/* Cart Drawer */}
