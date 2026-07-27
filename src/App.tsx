@@ -12,24 +12,34 @@ import { OrderHistoryModal } from './components/customer/OrderHistoryModal';
 import { CustomerProfileModal } from './components/customer/CustomerProfileModal';
 
 const MainAppContent: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<'home' | 'shop' | 'orders' | 'admin'>(() => {
+  const isAdminDomain = (() => {
     const hostname = window.location.hostname.toLowerCase();
-    if (hostname.startsWith('admin.') || hostname.includes('admin')) {
-      return 'admin';
-    }
-    return 'home';
-  });
+    return hostname.startsWith('admin.') || hostname.includes('admin');
+  })();
+
+  const [currentTab, setCurrentTab] = useState<'home' | 'shop' | 'orders'>('home');
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
+  // Dedicated Admin Domain View
+  if (isAdminDomain) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
+        <AdminPage onSwitchToStore={() => { window.location.href = 'https://vibestore.bond'; }} />
+        <LoginForm isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+      </div>
+    );
+  }
+
+  // Dedicated Customer Store View
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
       
-      {/* Top Navbar */}
+      {/* Top Navbar (No Admin Tab) */}
       <Navbar
         currentTab={currentTab}
-        onTabChange={(tab) => setCurrentTab(tab)}
+        onTabChange={(tab) => setCurrentTab(tab as any)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAuth={() => setIsAuthOpen(true)}
         onOpenProfile={() => setIsProfileOpen(true)}
@@ -49,10 +59,6 @@ const MainAppContent: React.FC = () => {
               setIsCartOpen(false);
             }}
           />
-        )}
-
-        {currentTab === 'admin' && (
-          <AdminPage onSwitchToStore={() => setCurrentTab('shop')} />
         )}
 
         {currentTab === 'orders' && (

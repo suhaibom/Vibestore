@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, User as UserIcon, Search, PackageCheck, Home, Store, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, User as UserIcon, Search, PackageCheck, Home, Store } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useStore } from '../../context/StoreContext';
 import { ThemeSelector } from './ThemeSelector';
@@ -66,19 +66,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Store className="w-4 h-4" />
               <span>Shop Store</span>
-            </button>
-
-            {/* Admin Dashboard Navigation Tab */}
-            <button
-              onClick={() => onTabChange('admin')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition flex items-center space-x-1.5 ${
-                currentTab === 'admin'
-                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-                  : 'text-amber-400 hover:text-amber-300'
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span>Admin Panel</span>
             </button>
           </div>
 
