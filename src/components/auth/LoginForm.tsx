@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShieldCheck, User as UserIcon, Mail, Phone, Sparkles, CheckCircle2, KeyRound, ArrowLeft } from 'lucide-react';
+import { X, User as UserIcon, Mail, Phone, Sparkles, CheckCircle2, KeyRound, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import type { UserRole } from '../../types';
 
