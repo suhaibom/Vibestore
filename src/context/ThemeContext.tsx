@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mode, setModeState] = useState<Mode>(() => {
-    return (localStorage.getItem('vibe_store_mode') as Mode) || 'dark';
+    return (localStorage.getItem('vibe_store_mode') as Mode) || 'light';
   });
 
   useEffect(() => {
