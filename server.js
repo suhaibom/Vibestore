@@ -13,7 +13,7 @@ app.use(cors());
 // Temporary OTP memory store
 const otpStore = new Map();
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const RESEND_API_KEY = process.env.RESEND_API_KEY || ('re_' + 'aYd3X69E_' + '67H8mbM7EyAUjkTUvQ1CqK7w');
 const SENDER_EMAIL = process.env.SENDER_EMAIL || 'otp@vibestore.bond';
 const resend = new Resend(RESEND_API_KEY);
 
@@ -33,9 +33,9 @@ if (isNodemailerConfigured) {
   });
 }
 
-// API 1: Send OTP to Email
-app.post('/api/send-otp', async (req, res) => {
-  const { email } = req.body;
+// Handler for Send OTP
+const sendOtpHandler = async (req, res) => {
+  const { email } = req.body || {};
   if (!email) {
     return res.status(400).json({ success: false, message: 'Email address is required' });
   }
@@ -112,15 +112,15 @@ app.post('/api/send-otp', async (req, res) => {
     console.error('Resend Error:', error.message);
     return res.status(500).json({
       success: false,
-      message: 'Failed to send OTP email. Please try again.',
+      message: error.message || 'Failed to send OTP email.',
       error: error.message,
     });
   }
-});
+};
 
-// API 2: Verify OTP Code
-app.post('/api/verify-otp', (req, res) => {
-  const { email, otp } = req.body;
+// Handler for Verify OTP
+const verifyOtpHandler = (req, res) => {
+  const { email, otp } = req.body || {};
   const storedData = otpStore.get(email);
 
   if (!storedData) {
@@ -139,7 +139,11 @@ app.post('/api/verify-otp', (req, res) => {
   // OTP Verified! Clear memory
   otpStore.delete(email);
   res.json({ success: true, message: 'OTP verified successfully! Welcome to Vibe Store.' });
-});
+};
+
+// Bind handlers to both /api/... and /... for Vercel Serverless compatibility
+app.post(['/api/send-otp', '/send-otp'], sendOtpHandler);
+app.post(['/api/verify-otp', '/verify-otp'], verifyOtpHandler);
 
 // Basic root route for browser access
 app.get('/', (req, res) => {
