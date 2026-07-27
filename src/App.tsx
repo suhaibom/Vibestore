@@ -9,11 +9,13 @@ import { HomePage } from './components/customer/HomePage';
 import { ShopPage } from './components/customer/ShopPage';
 import { AdminPage } from './pages/AdminPage';
 import { OrderHistoryModal } from './components/customer/OrderHistoryModal';
+import { CustomerProfileModal } from './components/customer/CustomerProfileModal';
 
 const MainAppContent: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<'home' | 'shop' | 'orders' | 'admin'>('home');
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
@@ -24,6 +26,7 @@ const MainAppContent: React.FC = () => {
         onTabChange={(tab) => setCurrentTab(tab)}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAuth={() => setIsAuthOpen(true)}
+        onOpenProfile={() => setIsProfileOpen(true)}
       />
 
       {/* Page Body View */}
@@ -58,6 +61,12 @@ const MainAppContent: React.FC = () => {
       <LoginForm
         isOpen={isAuthOpen}
         onClose={() => setIsAuthOpen(false)}
+      />
+
+      {/* Customer Profile Hub Modal */}
+      <CustomerProfileModal
+        isOpen={isProfileOpen}
+        onClose={() => setIsProfileOpen(false)}
       />
 
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, User as UserIcon, LogOut, Search, PackageCheck, Home, Store, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, User as UserIcon, Search, PackageCheck, Home, Store, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useStore } from '../../context/StoreContext';
 import { ThemeSelector } from './ThemeSelector';
@@ -9,6 +9,7 @@ interface NavbarProps {
   onTabChange: (tab: 'home' | 'shop' | 'orders' | 'admin') => void;
   onOpenCart: () => void;
   onOpenAuth: () => void;
+  onOpenProfile: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -16,8 +17,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   onTabChange,
   onOpenCart,
   onOpenAuth,
+  onOpenProfile,
 }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { cartCount, searchQuery, setSearchQuery } = useStore();
 
   return (
@@ -133,18 +135,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* User Account / Auth */}
             {user ? (
               <div className="flex items-center space-x-2 pl-2 border-l border-slate-800">
-                <div className="hidden xl:flex flex-col text-right">
-                  <span className="text-xs font-bold text-slate-200">{user.name}</span>
-                  <span className="text-[10px] text-indigo-400 capitalize font-medium">
-                    {user.role} ({user.email})
-                  </span>
-                </div>
                 <button
-                  onClick={logout}
-                  className="p-2 bg-slate-800/80 hover:bg-rose-900/30 hover:border-rose-500/50 border border-slate-700 text-slate-400 hover:text-rose-300 rounded-xl transition-colors"
-                  title="Sign Out"
+                  onClick={onOpenProfile}
+                  className="flex items-center space-x-2.5 p-1.5 sm:px-3 sm:py-1.5 bg-slate-800 hover:bg-slate-700/80 border border-slate-700/80 text-white rounded-xl transition-all shadow-sm cursor-pointer group"
                 >
-                  <LogOut className="w-4 h-4" />
+                  {user.avatar ? (
+                    <img src={user.avatar} alt={user.name} className="w-7 h-7 rounded-lg object-cover border border-indigo-500/50" />
+                  ) : (
+                    <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white font-black text-xs flex items-center justify-center">
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div className="hidden sm:flex flex-col text-left">
+                    <span className="text-xs font-extrabold text-slate-100 group-hover:text-indigo-300 transition-colors line-clamp-1">{user.name}</span>
+                    <span className="text-[9px] text-indigo-400 font-bold capitalize">Account Hub</span>
+                  </div>
+                  <UserIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-300 transition-colors" />
                 </button>
               </div>
             ) : (

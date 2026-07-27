@@ -1,5 +1,17 @@
 export type UserRole = 'admin' | 'customer';
 
+export interface SavedAddress {
+  id: string;
+  label: 'Home' | 'Work' | 'Other';
+  name: string;
+  phone: string;
+  street: string;
+  city: string;
+  state: string;
+  pincode: string;
+  isDefault?: boolean;
+}
+
 export interface User {
   id: string;
   name: string;
@@ -7,6 +19,9 @@ export interface User {
   role: UserRole;
   phone?: string;
   address?: string;
+  avatar?: string;
+  walletBalance?: number;
+  savedAddresses?: SavedAddress[];
   createdAt: string;
 }
 

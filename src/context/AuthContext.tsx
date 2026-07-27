@@ -10,6 +10,7 @@ interface AuthContextType {
   register: (data: { name: string; email: string; phone?: string; role?: UserRole }) => { success: boolean; message: string };
   logout: () => void;
   quickLogin: (role: UserRole) => void;
+  updateProfile: (data: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +21,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     storageService.setCurrentUser(user);
   }, [user]);
+
+  const updateProfile = (data: Partial<User>) => {
+    if (!user) return;
+    const updated = { ...user, ...data };
+    setUser(updated);
+    storageService.saveUser(updated);
+  };
 
   const login = (email: string): { success: boolean; message: string } => {
     const users = storageService.getUsers();
@@ -88,6 +96,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         register,
         logout,
         quickLogin,
+        updateProfile,
       }}
     >
       {children}
